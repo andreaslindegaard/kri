@@ -1,0 +1,2053 @@
+<!DOCTYPE html>
+<html lang="da">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opgivelsesskema - Kristendomskundskab</title>
+    <link rel="icon" type="image/png" href="krifavicon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.2s ease-out forwards;
+        }
+
+        @media print {
+            body {
+                background-color: white !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            .print-hidden {
+                display: none !important;
+            }
+
+            .print-container {
+                box-shadow: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                max-width: 100% !important;
+            }
+
+            table {
+                width: 100% !important;
+                border-collapse: collapse !important;
+                table-layout: fixed !important;
+                font-size: 11pt !important;
+            }
+
+            td {
+                word-wrap: break-word !important;
+                overflow-wrap: break-word !important;
+                white-space: pre-wrap !important;
+            }
+
+            th,
+            td {
+                padding: 4px 6px !important;
+                border: 1px solid #000 !important;
+            }
+
+            /* Juster kolonnebredder til A4 stående (Portrait) */
+            th:nth-child(1),
+            td:nth-child(1) {
+                width: 15% !important;
+            }
+
+            /* Emne */
+            th:nth-child(2),
+            td:nth-child(2) {
+                width: 25% !important;
+            }
+
+            /* Problemstillinger */
+            th:nth-child(3),
+            td:nth-child(3) {
+                width: 15% !important;
+            }
+
+            /* Begreber */
+            th:nth-child(4),
+            td:nth-child(4) {
+                width: 25% !important;
+            }
+
+            /* Tekster/Udtryksformer */
+            th:nth-child(5),
+            td:nth-child(5) {
+                width: 20% !important;
+            }
+
+            /* Kompetenceområder */
+
+            /* Skjul slet-kolonnen helt ved print */
+            th:nth-child(6),
+            td:nth-child(6) {
+                display: none !important;
+                width: 0 !important;
+            }
+
+            /* Fjern browserens standard sidehoved/sidefod (titel og URL) ved udskrift. margin: 0 tvinger Chrome til at fjerne dem. */
+            @page {
+                size: A4 portrait;
+                margin: 0;
+            }
+
+            /* Simuler margins så indholdet ikke sidder helt ude til kanten */
+            body {
+                background-color: white !important;
+                padding: 15mm 5mm 20mm 5mm !important;
+                margin: 0 !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-slate-100 p-4 md:p-8 font-sans text-slate-800 min-h-screen">
+
+    <div class="max-w-7xl mx-auto print-container bg-white p-6 md:p-10 rounded-xl shadow-lg">
+
+        <!-- Header -->
+        <div class="border-b pb-6 mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4 relative">
+            <div>
+                <div class="flex flex-wrap items-center gap-3">
+                    <h1 class="text-3xl font-bold text-slate-900">Opgivelsesskema til prøven</h1>
+                    <div class="flex gap-2 print-hidden ml-2">
+                        <button onclick="fillRequirements()"
+                            class="bg-red-100 text-red-700 hover:bg-red-200 px-3 py-1 rounded text-xs font-bold uppercase flex items-center gap-1 shadow-sm transition">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z">
+                                </path>
+                            </svg>
+                            TEST! (Slet mig)
+                        </button>
+                        <button onclick="clearAllData()"
+                            class="bg-red-50 border border-red-200 text-red-600 hover:bg-red-100 px-3 py-1 rounded text-xs font-bold uppercase flex items-center gap-1 shadow-sm transition">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                </path>
+                            </svg>
+                            RYD ALT
+                        </button>
+                    </div>
+                    <span id="save-indicator"
+                        class="hidden print-hidden text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full border border-emerald-200 opacity-0 transition-opacity duration-500 font-medium">Gemt
+                        lokalt</span>
+                </div>
+                <p class="text-slate-500 mt-2 text-lg">Kristendomskundskab (FP9)</p>
+
+                <!-- Stamdata Display (Vises KUN ved print) -->
+                <div class="hidden print:block mt-6 mb-6">
+                    <div id="print-header-skoleinfo"
+                        class="text-[11px] text-slate-500 border-b border-slate-200 pb-3 mb-5">
+                        Skolens kontor: Telefon: 56182500, Adresse: Tingsryds Allé 25 2680 Solrød Strand, Email:
+                        uglegaardsskolen@solrod.dk
+                    </div>
+                    <div class="flex gap-12 mb-6 text-sm">
+                        <div class="flex flex-col">
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Hold /
+                                Klasse</span>
+                            <span id="print-klasse" class="italic text-slate-400">Ikke angivet</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span
+                                class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Prøvetermin</span>
+                            <span id="print-termin" class="italic text-slate-400">Ikke angivet</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span
+                                class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Underviser</span>
+                            <span id="print-underviser" class="italic text-slate-400">Ikke angivet</span>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-12 text-sm">
+                        <div class="flex flex-col">
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Telefon</span>
+                            <span id="print-telefon" class="italic text-slate-400">Ikke angivet</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Mail</span>
+                            <span id="print-mail" class="italic text-slate-400">Ikke angivet</span>
+                        </div>
+                    </div>
+
+                    <div id="print-besked-container"
+                        class="hidden mt-6 bg-slate-50 border border-slate-200 p-4 rounded text-sm">
+                        <span class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2 block">Besked til
+                            Censor:</span>
+                        <div id="print-besked" class="whitespace-pre-wrap text-slate-700"></div>
+                    </div>
+                </div>
+
+                <!-- Stamdata Inputs (Skjules ved print) -->
+                <div class="mt-6 flex flex-col sm:flex-row gap-4 print-hidden">
+                    <div class="flex flex-col">
+                        <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Hold /
+                            Klasse</label>
+                        <input type="text" id="input-klasse" oninput="updateStamdata()"
+                            class="p-2 w-full sm:w-32 border-b-2 border-slate-200 bg-transparent focus:border-emerald-500 outline-none transition-colors"
+                            placeholder="F.eks. 9.A">
+                    </div>
+                    <div class="flex flex-col">
+                        <label
+                            class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Prøvetermin</label>
+                        <input type="text" id="input-termin" oninput="updateStamdata()"
+                            class="p-2 w-full sm:w-40 border-b-2 border-slate-200 bg-transparent focus:border-emerald-500 outline-none transition-colors"
+                            placeholder="F.eks. Sommer 2026">
+                    </div>
+                    <div class="flex flex-col">
+                        <label
+                            class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Underviser</label>
+                        <input type="text" id="input-underviser" oninput="updateStamdata()"
+                            class="p-2 w-full sm:w-48 border-b-2 border-slate-200 bg-transparent focus:border-emerald-500 outline-none transition-colors"
+                            placeholder="F.eks. Lærke Hansen">
+                    </div>
+                </div>
+
+                <!-- Container to align Censor Info and Progress Box side-by-side with equal height -->
+                <div class="mt-4 flex flex-col xl:flex-row gap-6 items-stretch print-hidden">
+                    <!-- Lærerens Kontaktinfo og Evt Besked (Skjules ved print) -->
+                    <div
+                        class="bg-slate-50 p-4 border border-slate-200 rounded-lg shadow-sm flex-1 flex flex-col md:flex-row gap-6 h-full">
+                        <div class="flex-1">
+                            <p class="text-xs text-slate-500 mb-3 italic">Udfyld evt. din kontaktinfo til censor:</p>
+                            <div class="flex flex-col sm:flex-row gap-4">
+                                <div class="flex flex-col flex-1">
+                                    <label
+                                        class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Dit
+                                        Telefonnummer</label>
+                                    <input type="text" id="input-telefon" oninput="updateStamdata()"
+                                        class="p-2 w-full border-b-2 border-slate-300 bg-white focus:border-emerald-500 outline-none transition-colors rounded-t-sm"
+                                        placeholder="Tlf nr.">
+                                </div>
+                                <div class="flex flex-col flex-1">
+                                    <label
+                                        class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Din
+                                        Mail</label>
+                                    <input type="email" id="input-mail" oninput="updateStamdata()"
+                                        class="p-2 w-full border-b-2 border-slate-300 bg-white focus:border-emerald-500 outline-none transition-colors rounded-t-sm"
+                                        placeholder="E-mail adresse">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hidden md:block w-px bg-slate-200 my-2"></div>
+                        <div class="flex-1 flex flex-col">
+                            <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Besked til
+                                Censor (Eventuelt)</label>
+                            <textarea id="input-besked" rows="2" oninput="updateStamdata()"
+                                class="p-2 w-full border border-slate-300 bg-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-colors rounded-md resize-none flex-1 h-full textarea-auto-height"
+                                placeholder="Kort besked ang. prøven..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div
+                        class="w-full xl:w-96 bg-slate-50 p-4 rounded-lg border border-slate-200 shadow-sm flex flex-col justify-center shrink-0">
+                        <div class="flex justify-between text-sm mb-1 font-medium text-slate-700">
+                            <span>Krav til opgivelserne:</span>
+                            <span id="progress-text">0/17 opfyldt</span>
+                        </div>
+                        <div class="w-full bg-slate-200 rounded-full h-2.5 mb-2">
+                            <div id="progress-bar" class="bg-emerald-500 h-2.5 rounded-full transition-all duration-500"
+                                style="width: 0%"></div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-slate-500">
+                            <span id="progress-emner">Emner (0/4)</span>
+                            <span id="progress-udtryk">Udtryksformer (0/5)</span>
+                            <span id="progress-kultur">Kulturteknikker (0/4)</span>
+                            <span id="progress-komp">Kompetenceområder (0/4)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="print-hidden mb-12 bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <h2 class="text-xl font-semibold mb-4 text-slate-800">Tilføj nyt emne til skemaet</h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+
+                        <div class="flex flex-col">
+                            <label class="font-medium text-sm text-slate-700 mb-1">Emne/tema til udtræk</label>
+                            <input type="text" id="input-emne"
+                                class="p-2 border rounded focus:ring-2 focus:ring-blue-500 outline-none"
+                                placeholder="F.eks. Tro og religion i det moderne">
+                        </div>
+
+                        <div class="flex flex-col">
+                            <label class="font-medium text-sm text-slate-700 mb-1">Problemstillinger
+                                (undervisning)</label>
+                            <textarea id="input-problem" rows="3"
+                                class="p-2 border rounded focus:ring-2 focus:ring-blue-500 outline-none resize-none"
+                                placeholder="Hvilken betydning har tro for menneskers liv?"></textarea>
+                        </div>
+
+                        <div class="flex flex-col">
+                            <label class="font-medium text-sm text-slate-700 mb-1">Faglige begreber</label>
+
+                            <!-- Input felt med autocomplete -->
+                            <div class="relative mb-2">
+                                <input type="text" id="input-begreb-text"
+                                    class="w-full p-2 border rounded focus:ring-2 focus:ring-emerald-500 outline-none text-sm"
+                                    placeholder="F.eks. Næstekærlighed..." oninput="showBegrebAutocomplete(this.value)"
+                                    onkeydown="handleBegrebKeydown(event)">
+                                <div id="begreb-autocomplete-list"
+                                    class="absolute z-20 w-full bg-white border border-slate-200 rounded shadow-lg hidden max-h-48 overflow-y-auto mt-1">
+                                </div>
+                            </div>
+
+                            <!-- Her vises de valgte begreb-tags -->
+                            <div id="begreber-tags-container"
+                                class="flex flex-wrap gap-2 min-h-[42px] p-2 border rounded bg-white items-center">
+                                <span class="text-slate-400 text-xs italic pointer-events-none w-full text-center"
+                                    id="begreber-tags-placeholder">Skriv et begreb og tryk Enter...</span>
+                            </div>
+
+                            <!-- Forslag til relaterede begreber -->
+                            <div id="related-begreber-suggestions" class="mt-2 min-h-[24px]"></div>
+                        </div>
+
+                        <div class="flex flex-col">
+                            <label class="font-medium text-sm text-slate-700 mb-1">Tekster og udtryksformer</label>
+
+                            <!-- Input felter for nyt materiale -->
+                            <div class="flex flex-col gap-2 p-2 mb-2 bg-slate-50 rounded border border-slate-200">
+                                <input type="text" id="input-tekst-titel" onkeydown="handleTekstKeydown(event)"
+                                    class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+                                    placeholder="Titel (f.eks. Science Fiction...)">
+
+                                <div class="flex gap-2">
+                                    <input type="text" id="input-tekst-form" list="udtryksformer-list"
+                                        onkeydown="handleTekstKeydown(event)"
+                                        class="flex-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+                                        placeholder="Udtryksform (valgfrit)">
+                                    <datalist id="udtryksformer-list">
+                                        <option value="Tekst">
+                                        <option value="Artikel">
+                                        <option value="Billedkunst">
+                                        <option value="Filmklip">
+                                        <option value="Kortfilm">
+                                        <option value="Dokumentar">
+                                        <option value="Musik/Sang">
+                                        <option value="Salme">
+                                        <option value="Podcast">
+                                        <option value="Genstand">
+                                        <option value="Nyhedsindslag">
+                                        <option value="Novelle">
+                                        <option value="Digt">
+                                    </datalist>
+                                </div>
+
+                                <div class="flex gap-2">
+                                    <input type="url" id="input-tekst-link" onkeydown="handleTekstKeydown(event)"
+                                        class="flex-1 w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+                                        placeholder="Link til materiale (valgfrit)">
+
+                                    <button type="button" onclick="addTekstItem()"
+                                        class="bg-blue-100 text-blue-700 hover:bg-blue-200 hover:text-blue-800 px-3 py-1 rounded border border-blue-200 transition-colors shrink-0"
+                                        title="Tilføj materiale">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                            fill="currentColor">
+                                            <path fill-rule="evenodd"
+                                                d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Container for valgte tekster/udtryksformer -->
+                            <div id="tekster-list-container"
+                                class="flex flex-col gap-2 min-h-[42px] p-2 border rounded bg-white">
+                                <span class="text-slate-400 text-xs italic pointer-events-none w-full text-center"
+                                    id="tekster-placeholder">Tilføj materialer ovenfor...</span>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col">
+                            <label class="font-medium text-sm text-slate-700 mb-1">Kompetenceområder</label>
+
+                            <!-- Dropdown til at vælge nye tags -->
+                            <select id="input-kompetencer" onchange="addTag(this)"
+                                class="mb-2 p-2 border rounded focus:ring-2 focus:ring-blue-500 outline-none text-sm bg-slate-50 cursor-pointer">
+                                <option value="" disabled selected>+ Tilføj kompetenceområde</option>
+                                <option value="Livsfilosofi og etik">Livsfilosofi og etik</option>
+                                <option value="Bibelske fortællinger">Bibelske fortællinger</option>
+                                <option value="Kristendom">Kristendom</option>
+                                <option value="Ikke-kristne religioner og livsopfattelser">Ikke-kristne religioner
+                                    og
+                                    livsopfattelser</option>
+                            </select>
+
+                            <!-- Her vises de valgte tags -->
+                            <div id="tags-container"
+                                class="flex flex-wrap gap-2 min-h-[42px] p-2 border rounded bg-white items-center">
+                                <span class="text-slate-400 text-xs italic pointer-events-none w-full text-center"
+                                    id="tags-placeholder">Vælg ovenfor for at tilføje...</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="mt-4 flex justify-end">
+                        <button id="add-row-btn" onclick="addRow()"
+                            class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded transition duration-150 ease-in-out shadow flex items-center gap-2 text-sm sm:text-base">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            Tilføj til skema
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tabel Sektion -->
+                <div>
+                    <h2 class="text-2xl font-bold mb-4 print-hidden">Det færdige skema</h2>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse border border-slate-300">
+                            <thead class="bg-[#005f56] text-white print:text-sm print:bg-[#005f56] print:text-white"
+                                style="-webkit-print-color-adjust: exact; print-color-adjust: exact;">
+                                <tr class="align-bottom">
+                                    <th class="border border-slate-300 px-2 py-3 w-[15%] print:w-[15%] font-bold">
+                                        Emne/tema til udtræk</th>
+                                    <th class="border border-slate-300 px-2 py-3 w-[20%] print:w-[22%] font-bold">
+                                        Problemstillinger behandlet i undervisning</th>
+                                    <th class="border border-slate-300 px-2 py-3 w-[20%] print:w-[24%] font-bold">
+                                        Faglige begreber fra undervisningen</th>
+                                    <th class="border border-slate-300 px-2 py-3 w-[25%] print:w-[20%] font-bold">
+                                        Tekster og andre udtryksformer</th>
+                                    <th class="border border-slate-300 px-2 py-3 w-[20%] print:w-[19%] font-bold">
+                                        Kompetenceområder</th>
+                                    <th
+                                        class="border border-slate-300 px-2 py-3 w-20 text-center print-hidden font-bold">
+                                        Handling</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body">
+                                <!-- Rækker genereres her via JS -->
+                                <tr id="empty-state">
+                                    <td colspan="6" class="text-center p-8 text-slate-400 italic print-hidden">
+                                        Skemaet
+                                        er tomt.
+                                        Tilføj emner ovenfor.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Kulturteknikker Sektion -->
+                <div class="mt-10 border-t pt-6">
+                    <h3 class="font-bold text-lg mb-2">Kulturteknikker</h3>
+
+                    <div class="print-hidden mb-2">
+                        <p class="text-sm text-slate-500 mb-2">Husk at opgive minimum 4 kulturteknikker (redskaber
+                            til
+                            erkendelse og formidling), heraf mindst én it-baseret.
+                        </p>
+
+                        <!-- Her vises de valgte kultur-tags -->
+                        <div id="kultur-tags-container"
+                            class="flex flex-wrap gap-2 mb-2 min-h-[42px] p-2 border rounded bg-white items-center">
+                            <span class="text-slate-400 text-xs italic pointer-events-none w-full text-center"
+                                id="kultur-tags-placeholder">Skriv en kulturteknik og tryk Enter...</span>
+                        </div>
+
+                        <div class="flex gap-2">
+                            <input type="text" id="input-kultur-text" onkeydown="handleKulturKeydown(event)"
+                                class="flex-1 w-full p-2 border rounded focus:ring-2 focus:ring-emerald-500 outline-none text-sm"
+                                placeholder="F.eks. interview, grafisk tabelfremstilling, tidslinje...">
+
+                            <button type="button" onclick="addKulturItem()"
+                                class="bg-emerald-100 text-emerald-800 hover:bg-emerald-200 hover:text-emerald-900 px-3 py-1 rounded border border-emerald-200 transition-colors shrink-0"
+                                title="Tilføj kulturteknik">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                    fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <!-- Forslag til kulturteknikker -->
+                        <div id="kultur-suggestions" class="mt-3 flex flex-wrap gap-2">
+                            <button type="button"
+                                class="kultur-suggestion-btn text-xs bg-slate-50 hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 px-2 py-1 rounded-full border border-slate-300 hover:border-emerald-300 transition-colors duration-150 flex items-center gap-1 shadow-sm"
+                                onclick="addKulturSuggestion('Google Slides')">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 4v16m8-8H4">
+                                    </path>
+                                </svg>
+                                Google Slides
+                            </button>
+                            <button type="button"
+                                class="kultur-suggestion-btn text-xs bg-slate-50 hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 px-2 py-1 rounded-full border border-slate-300 hover:border-emerald-300 transition-colors duration-150 flex items-center gap-1 shadow-sm"
+                                onclick="addKulturSuggestion('Podcast')">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 4v16m8-8H4">
+                                    </path>
+                                </svg>
+                                Podcast
+                            </button>
+                            <button type="button"
+                                class="kultur-suggestion-btn text-xs bg-slate-50 hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 px-2 py-1 rounded-full border border-slate-300 hover:border-emerald-300 transition-colors duration-150 flex items-center gap-1 shadow-sm"
+                                onclick="addKulturSuggestion('Rollespil')">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 4v16m8-8H4">
+                                    </path>
+                                </svg>
+                                Rollespil
+                            </button>
+                            <button type="button"
+                                class="kultur-suggestion-btn text-xs bg-slate-50 hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 px-2 py-1 rounded-full border border-slate-300 hover:border-emerald-300 transition-colors duration-150 flex items-center gap-1 shadow-sm"
+                                onclick="addKulturSuggestion('Interview')">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 4v16m8-8H4">
+                                    </path>
+                                </svg>
+                                Interview
+                            </button>
+                            <button type="button"
+                                class="kultur-suggestion-btn text-xs bg-slate-50 hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 px-2 py-1 rounded-full border border-slate-300 hover:border-emerald-300 transition-colors duration-150 flex items-center gap-1 shadow-sm"
+                                onclick="addKulturSuggestion('Mindmap')">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 4v16m8-8H4">
+                                    </path>
+                                </svg>
+                                Mindmap
+                            </button>
+                            <button type="button"
+                                class="kultur-suggestion-btn text-xs bg-slate-50 hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 px-2 py-1 rounded-full border border-slate-300 hover:border-emerald-300 transition-colors duration-150 flex items-center gap-1 shadow-sm"
+                                onclick="addKulturSuggestion('Debatindlæg')">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 4v16m8-8H4">
+                                    </path>
+                                </svg>
+                                Debatindlæg
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Dette vises kun ved udskrift eller som preview -->
+                    <div id="print-kultur"
+                        class="whitespace-pre-wrap hidden print:block text-slate-800 print:text-sm mt-4">
+                    </div>
+                </div>
+
+                <!-- Handlinger (Print og Kladde) -->
+                <div class="mt-12 flex flex-col sm:flex-row items-center justify-center relative print-hidden h-14">
+                    <div class="flex gap-4 items-center justify-center w-full">
+                        <input type="file" id="file-upload" accept=".json" class="hidden" onchange="uploadDraft(event)">
+                        <button onclick="document.getElementById('file-upload').click()"
+                            class="bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 font-medium py-2 px-6 rounded-lg transition duration-200 shadow-sm flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                            </svg>
+                            Åbn kladde (Fil)
+                        </button>
+
+                        <button onclick="downloadDraft()"
+                            class="bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 font-medium py-2 px-6 rounded-lg transition duration-200 shadow-sm flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                            </svg>
+                            Gem kladde (Fil)
+                        </button>
+
+                        <button onclick="validateAndPrint()"
+                            class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition duration-200 flex items-center gap-2 text-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            Eksportér PDF
+                        </button>
+                    </div>
+
+                    <!-- Diskret Gem for nu knap -->
+                    <button onclick="saveForNow()"
+                        class="absolute right-0 bg-transparent hover:bg-slate-100 text-slate-500 font-medium py-2 px-4 rounded-lg transition duration-200 flex items-center gap-2 text-xs">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        Gem for nu
+                    </button>
+                </div>
+            </div>
+
+            <!-- Print Validation Modal -->
+            <div id="print-modal"
+                class="fixed inset-0 bg-slate-900 bg-opacity-50 z-50 hidden flex items-center justify-center p-4 print-hidden">
+                <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 animate-fade-in">
+                    <div class="flex items-center gap-3 text-amber-500 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                        <h3 class="text-xl font-bold text-slate-800">Skemaet er ikke færdigt</h3>
+                    </div>
+
+                    <p class="text-slate-600 mb-4">Du mangler at opfylde følgende minimumskrav, før skemaet er klar
+                        til
+                        prøven:
+                    </p>
+
+                    <ul id="print-modal-missing-list"
+                        class="list-disc pl-5 text-sm text-slate-700 mb-6 space-y-1 font-medium">
+                        <!-- Genereres via JS -->
+                    </ul>
+
+                    <div class="flex flex-col-reverse sm:flex-row justify-end gap-3 mt-8">
+                        <button onclick="closePrintModal()"
+                            class="px-5 py-2.5 bg-white border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors font-medium">
+                            Vend tilbage
+                        </button>
+                        <button onclick="forcePrint()"
+                            class="px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-lg transition-colors shadow flex items-center gap-2 font-medium">
+                            Udskriv kladde alligevel
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                let rowCount = 0;
+                let editingRow = null;
+                let hasUnsavedChanges = false;
+
+                // Advar brugeren hvis de prøver at lukke siden uden at gemme
+                window.addEventListener('beforeunload', (e) => {
+                    if (hasUnsavedChanges) {
+                        e.preventDefault();
+                        e.returnValue = ''; // Standard måde at vise advarslen på i moderne browsere
+                    }
+                });
+
+                // Fang alle indtastninger på hele siden (selv dem, der ikke auto-gemmer endnu)
+                document.addEventListener('input', () => {
+                    hasUnsavedChanges = true;
+                });
+
+                function addRow() {
+                    const emne = document.getElementById('input-emne').value.trim();
+                    const problem = document.getElementById('input-problem').value.trim();
+
+                    // Hent valgte faglige begreber fra vores tags
+                    const begrebElements = document.querySelectorAll('#begreber-tags-container .begreb-tag-text');
+                    const begreber = Array.from(begrebElements).map(el => el.textContent).join('\n');
+
+                    // Hent valgte tekster/udtryksformer
+                    const tekstElements = document.querySelectorAll('#tekster-list-container > div');
+                    const teksterHtml = Array.from(tekstElements).map(el => {
+                        const textSpan = el.querySelector('.tekst-item-text');
+                        if (!textSpan) return '';
+
+                        const title = textSpan.dataset.title || '';
+                        const form = textSpan.dataset.form || '';
+                        const link = textSpan.dataset.link || '';
+
+                        let resultHtml = '';
+
+                        // Håndter manglende data som N/A (not applicable), og bevar formateringen
+                        const displayTitle = title ? title : "N/A";
+                        const displayForm = form ? form : "N/A";
+
+                        const titleDiv = document.createElement('div');
+                        titleDiv.textContent = displayTitle;
+                        resultHtml += `<strong>${titleDiv.innerHTML}</strong>`;
+
+                        const formDiv = document.createElement('div');
+                        formDiv.textContent = displayForm;
+                        resultHtml += `<br><i>${formDiv.innerHTML}</i>`;
+
+                        if (link) {
+                            const linkDiv = document.createElement('div');
+                            linkDiv.textContent = link;
+                            const safeLink = linkDiv.innerHTML;
+                            resultHtml += `<br><a href="${safeLink}" target="_blank" class="text-blue-600 underline">Link</a>`;
+                        } else {
+                            resultHtml += `<br><span class="text-slate-500">N/A</span>`;
+                        }
+
+                        return `<div class="mb-3 last:mb-0">${resultHtml}</div>`;
+                    }).filter(text => text !== '').join('');
+
+                    // Hent valgte kompetenceområder fra vores tags
+                    const tagElements = document.querySelectorAll('#tags-container .tag-text');
+                    const kompetencer = Array.from(tagElements).map(el => el.textContent).join('\n');
+
+                    if (!emne) {
+                        alert('Du skal som minimum angive et emne/tema.');
+                        document.getElementById('input-emne').focus();
+                        return;
+                    }
+
+                    // Fjern 'tom tabel' beskeden
+                    const emptyState = document.getElementById('empty-state');
+                    if (emptyState) {
+                        emptyState.remove();
+                    }
+
+                    const tbody = document.getElementById('table-body');
+
+                    let tr;
+                    if (editingRow) {
+                        tr = editingRow;
+                        // Fjern markering fra edit mode
+                        tr.classList.remove('bg-amber-50', 'ring-2', 'ring-amber-400');
+                    } else {
+                        tr = document.createElement('tr');
+                        tr.className = "hover:bg-slate-50 transition-colors duration-150 align-top";
+                    }
+
+                    // Vi gemmer rå data som dataset attributter så vi let kan serialize/deserialize senere
+                    tr.innerHTML = `
+                <td class="border border-slate-300 p-3 font-medium outline-none focus:bg-emerald-50 focus:ring-2 focus:ring-emerald-500 rounded transition duration-150" contenteditable="true" onblur="saveInlineEdit(this)" data-raw="${emne}">${formatText(emne)}</td>
+                <td class="border border-slate-300 p-3 outline-none focus:bg-emerald-50 focus:ring-2 focus:ring-emerald-500 rounded transition duration-150" contenteditable="true" onblur="saveInlineEdit(this)" data-raw="${problem}">${formatText(problem)}</td>
+                <td class="border border-slate-300 p-3 outline-none focus:bg-emerald-50 focus:ring-2 focus:ring-emerald-500 rounded transition duration-150" contenteditable="true" onblur="saveInlineEdit(this)" data-raw="${begreber}">${formatText(begreber)}</td>
+                <td class="border border-slate-300 p-3 outline-none focus:bg-emerald-50 focus:ring-2 focus:ring-emerald-500 rounded transition duration-150" contenteditable="true" onblur="saveInlineEdit(this)" data-raw-html="${encodeURIComponent(teksterHtml)}">${teksterHtml}</td>
+                <td class="border border-slate-300 p-3 outline-none focus:bg-emerald-50 focus:ring-2 focus:ring-emerald-500 rounded transition duration-150" contenteditable="true" onblur="saveInlineEdit(this)" data-raw="${kompetencer}">${formatTextDoubleSpaced(kompetencer)}</td>
+                <td class="border border-slate-300 p-2 text-center print-hidden align-middle">
+                    <div class="flex flex-col gap-1 items-center">
+                        <button onclick="editRow(this)" class="text-blue-500 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 p-1.5 rounded transition-colors w-full flex justify-center" title="Rediger række">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                            </svg>
+                        </button>
+                        <button onclick="deleteRow(this)" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-1.5 rounded transition-colors w-full flex justify-center" title="Slet række">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                </td>
+            `;
+
+                    if (!editingRow) {
+                        tbody.appendChild(tr);
+                        rowCount++;
+                    } else {
+                        editingRow = null;
+                        // Gendan knappen til 'Tilføj'
+                        const addBtn = document.getElementById('add-row-btn');
+                        if (addBtn) {
+                            addBtn.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                        </svg>
+                        Tilføj til skema
+                    `;
+                            addBtn.className = "bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded transition duration-150 ease-in-out shadow flex items-center gap-2 text-sm sm:text-base";
+                        }
+                    }
+
+                    // Ryd felter
+                    document.getElementById('input-emne').value = '';
+                    document.getElementById('input-problem').value = '';
+
+                    // Nulstil begreb-tags
+                    const begrebTagsContainer = document.getElementById('begreber-tags-container');
+                    begrebTagsContainer.innerHTML = '<span class="text-slate-400 text-xs italic pointer-events-none w-full text-center" id="begreber-tags-placeholder">Skriv et begreb og tryk Enter...</span>';
+                    document.getElementById('related-begreber-suggestions').innerHTML = '';
+                    document.getElementById('input-begreb-text').value = '';
+
+                    // Nulstil tekst-listen
+                    const teksterContainer = document.getElementById('tekster-list-container');
+                    teksterContainer.innerHTML = '<span class="text-slate-400 text-xs italic pointer-events-none w-full text-center" id="tekster-placeholder">Tilføj materialer ovenfor...</span>';
+                    document.getElementById('input-tekst-titel').value = '';
+                    document.getElementById('input-tekst-form').value = '';
+                    document.getElementById('input-tekst-link').value = '';
+
+                    // Nulstil tags og dropdown
+                    const tagsContainer = document.getElementById('tags-container');
+                    tagsContainer.innerHTML = '<span class="text-slate-400 text-xs italic pointer-events-none w-full text-center" id="tags-placeholder">Vælg ovenfor for at tilføje...</span>';
+                    document.getElementById('input-kompetencer').value = '';
+
+                    // Sæt fokus tilbage til første felt
+                    document.getElementById('input-emne').focus();
+                    updateProgress();
+                    saveDraft();
+                }
+
+                function saveInlineEdit(cell) {
+                    const currentHtml = cell.innerHTML;
+                    let text = cell.innerText.trim();
+                    const cellIndex = cell.cellIndex;
+
+                    if (cellIndex === 3) {
+                        // For HTML-celler som tekster bruger vi bevarelsen af selve HTML-koden
+                        cell.dataset.rawHtml = encodeURIComponent(currentHtml);
+                    } else if (cellIndex === 4) {
+                        cell.dataset.raw = text;
+                        cell.innerHTML = formatTextDoubleSpaced(text);
+                    } else {
+                        cell.dataset.raw = text;
+                        cell.innerHTML = formatText(text);
+                    }
+
+                    // Hvis der blev fjernet eller skrevet nye udtryksformer skal tælleren måske opdateres
+                    updateProgress();
+                    saveDraft();
+                }
+
+                function editRow(btn) {
+                    const row = btn.closest('tr');
+
+                    // Hent data back-up via dataset på cellerne
+                    const emne = row.cells[0].dataset.raw || '';
+                    const problem = row.cells[1].dataset.raw || '';
+                    const begreber = row.cells[2].dataset.raw || '';
+                    const teksterHtml = decodeURIComponent(row.cells[3].dataset.rawHtml || '');
+                    const kompetencer = row.cells[4].dataset.raw || '';
+
+                    // Hæld det retur i inputfelterne
+                    document.getElementById('input-emne').value = emne;
+                    document.getElementById('input-problem').value = problem;
+
+                    // Nulstil eksisterende for at lave plads
+                    document.getElementById('begreber-tags-container').innerHTML = '';
+                    document.getElementById('tekster-list-container').innerHTML = '';
+                    document.getElementById('tags-container').innerHTML = '';
+
+                    // Genopbyg begreber
+                    if (begreber) {
+                        begreber.split('\n').forEach(b => {
+                            if (b.trim()) addBegrebTag(b.trim());
+                        });
+                    } else {
+                        document.getElementById('begreber-tags-container').innerHTML = '<span class="text-slate-400 text-xs italic pointer-events-none w-full text-center" id="begreber-tags-placeholder">Skriv et begreb og tryk Enter...</span>';
+                    }
+
+                    // Genopbyg tekster fra raw HTML
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = teksterHtml;
+
+                    let hasTexts = false;
+
+                    // Check if using the new format div.mb-3
+                    const textBlocks = tempDiv.querySelectorAll('div.mb-3');
+
+                    if (textBlocks.length > 0) {
+                        textBlocks.forEach(block => {
+                            hasTexts = true;
+
+                            const strongTag = block.querySelector('strong');
+                            const iTag = block.querySelector('i');
+                            const aTag = block.querySelector('a');
+
+                            const itemTitle = strongTag ? strongTag.textContent.trim() : block.textContent.trim().split('\n')[0];
+                            const itemForm = iTag ? iTag.textContent.trim() : '';
+                            const itemLink = aTag ? aTag.getAttribute('href') : '';
+
+                            const teksterContainer = document.getElementById('tekster-list-container');
+                            const placeholder = document.getElementById('tekster-placeholder');
+                            if (placeholder) placeholder.remove();
+
+                            const div = document.createElement('div');
+                            div.className = "flex items-center justify-between p-2 rounded bg-slate-50 border border-slate-200 animate-fade-in";
+
+                            let linkHtml = itemLink ? `data-link="${itemLink}"` : '';
+                            let linkIndicator = itemLink ? `<a href="${itemLink}" target="_blank" class="text-blue-500 hover:text-blue-700 mx-2" title="Åbn link"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg></a>` : '';
+
+                            const displayHtml = itemForm ? `${itemTitle} (${itemForm})` : itemTitle;
+
+                            div.innerHTML = `
+                        <div class="flex items-center gap-2 overflow-hidden">
+                            <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            <span class="text-sm font-medium tekst-item-text truncate" data-title="${itemTitle}" data-form="${itemForm}" ${linkHtml}>${displayHtml}</span>
+                            ${linkIndicator}
+                        </div>
+                        <button type="button" onclick="this.parentElement.remove(); if(document.querySelectorAll('#tekster-list-container > div').length === 0) document.getElementById('tekster-list-container').innerHTML = '<span class=\\'text-slate-400 text-xs italic pointer-events-none w-full text-center\\' id=\\'tekster-placeholder\\'>Tilføj materialer ovenfor...</span>';" class="text-red-400 hover:text-red-600 focus:outline-none p-1 shrink-0">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                        </button>
+                    `;
+                            teksterContainer.appendChild(div);
+                        });
+                    } else {
+                        // Backward compatibility
+                        const textLines = tempDiv.innerHTML.split(/<br\s*\/?>/i);
+                        textLines.forEach(line => {
+                            if (!line.trim()) return;
+                            hasTexts = true;
+
+                            // Udtræk teksten (uden a-tags) og linket (href attribut)
+                            const tempLineDiv = document.createElement('div');
+                            tempLineDiv.innerHTML = line;
+
+                            let linkUrl = "";
+                            let titleForm = tempLineDiv.textContent.trim();
+
+                            const aTag = tempLineDiv.querySelector('a');
+                            if (aTag) {
+                                linkUrl = aTag.getAttribute('href');
+                            }
+
+                            // Brug dom-manipulation til direkte at skabe tekstelementerne i listen
+                            const teksterContainer = document.getElementById('tekster-list-container');
+                            const placeholder = document.getElementById('tekster-placeholder');
+                            if (placeholder) placeholder.remove();
+
+                            const div = document.createElement('div');
+                            div.className = "flex items-center justify-between p-2 rounded bg-slate-50 border border-slate-200 animate-fade-in";
+
+                            let linkHtml = linkUrl ? `data-link="${linkUrl}"` : '';
+                            let linkIndicator = linkUrl ? `<a href="${linkUrl}" target="_blank" class="text-blue-500 hover:text-blue-700 mx-2" title="Åbn link"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg></a>` : '';
+
+                            div.innerHTML = `
+                        <div class="flex items-center gap-2 overflow-hidden">
+                            <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            <span class="text-sm font-medium tekst-item-text truncate" data-title="${titleForm}" ${linkHtml}>${titleForm}</span>
+                            ${linkIndicator}
+                        </div>
+                        <button type="button" onclick="this.parentElement.remove(); if(document.querySelectorAll('#tekster-list-container > div').length === 0) document.getElementById('tekster-list-container').innerHTML = '<span class=\\'text-slate-400 text-xs italic pointer-events-none w-full text-center\\' id=\\'tekster-placeholder\\'>Tilføj materialer ovenfor...</span>';" class="text-red-400 hover:text-red-600 focus:outline-none p-1 shrink-0">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                        </button>
+                    `;
+                            teksterContainer.appendChild(div);
+                        });
+                    }
+
+                    if (!hasTexts) {
+                        document.getElementById('tekster-list-container').innerHTML = '<span class="text-slate-400 text-xs italic pointer-events-none w-full text-center" id="tekster-placeholder">Tilføj materialer ovenfor...</span>';
+                    }
+
+                    // Genopbyg kompetencer
+                    if (kompetencer) {
+                        document.getElementById('tags-placeholder')?.remove();
+                        kompetencer.split('\n').forEach(k => {
+                            if (k.trim()) {
+                                const tagsContainer = document.getElementById('tags-container');
+                                const span = document.createElement('span');
+                                span.className = "inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 border border-blue-200 shadow-sm animate-fade-in";
+                                span.innerHTML = `
+                            <span class="tag-text">${k.trim()}</span>
+                            <button type="button" onclick="deleteTag(this)" class="text-blue-500 hover:text-blue-700 focus:outline-none focus:text-blue-700 print-hidden" p="Slet tag">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                                </svg>
+                            </button>
+                        `;
+                                tagsContainer.appendChild(span);
+                            }
+                        });
+                    } else {
+                        document.getElementById('tags-container').innerHTML = '<span class="text-slate-400 text-xs italic pointer-events-none w-full text-center" id="tags-placeholder">Vælg ovenfor for at tilføje...</span>';
+                    }
+
+                    // Scroll op til emne-feltet for at starte redigering
+                    window.scrollTo({ top: document.getElementById('input-emne').offsetTop - 100, behavior: 'smooth' });
+
+                    // Sæt indeværende række i edit mode i stedet for at slette den
+                    editingRow = row;
+                    row.classList.add('bg-amber-50', 'ring-2', 'ring-amber-400', 'transition', 'duration-300');
+
+                    const addBtn = document.getElementById('add-row-btn');
+                    if (addBtn) {
+                        addBtn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                    </svg>
+                    Gem i skema
+                `;
+                        addBtn.className = "bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-6 rounded transition duration-150 ease-in-out shadow flex items-center gap-2 text-sm sm:text-base cursor-pointer";
+                    }
+                }
+
+                function deleteRow(btn) {
+                    if (confirm('Er du sikker på, at du vil slette denne række?')) {
+                        const row = btn.closest('tr');
+                        row.remove();
+                        rowCount--;
+
+                        // Hvis tabellen er tom igen, vis besked
+                        if (rowCount === 0) {
+                            const tbody = document.getElementById('table-body');
+                            tbody.innerHTML = `
+                        <tr id="empty-state">
+                            <td colspan="6" class="text-center p-8 text-slate-400 italic print-hidden">Skemaet er tomt. Tilføj emner ovenfor.</td>
+                        </tr>
+                    `;
+                        }
+                        updateProgress();
+                        saveDraft();
+                    }
+                }
+
+                // Konverterer linjeskift til <br>
+                function formatText(text) {
+                    if (!text) return '';
+
+                    // Sikrer mod HTML-injektion (XSS)
+                    const div = document.createElement('div');
+                    div.textContent = text;
+                    let safeText = div.innerHTML;
+
+                    // Erstatter linjeskift med <br>
+                    safeText = safeText.replace(/\n/g, '<br/>');
+                    return safeText;
+                }
+
+                // Konverterer linjeskift til dobbelte <br> for at skabe luft imellem valgte kasser (bruges til kompetenceområder)
+                function formatTextDoubleSpaced(text) {
+                    if (!text) return '';
+
+                    // Sikrer mod HTML-injektion (XSS)
+                    const div = document.createElement('div');
+                    div.textContent = text;
+                    let safeText = div.innerHTML;
+
+                    // Erstatter linjeskift med <br><br> for at lave en blank linje
+                    safeText = safeText.replace(/\n/g, '<br/><br/>');
+                    return safeText;
+                }
+
+                // Opdaterer live-visningen af kulturteknikker til print
+                function updateKulturPrint() {
+                    const container = document.getElementById('kultur-tags-container');
+                    const tags = Array.from(container.querySelectorAll('.kultur-tag-text')).map(el => el.textContent);
+                    const printDiv = document.getElementById('print-kultur');
+
+                    if (tags.length === 0) {
+                        printDiv.innerHTML = '<span class="italic text-slate-400">Ingen kulturteknikker angivet.</span>';
+                    } else {
+                        printDiv.innerHTML = formatText(tags.join(', '));
+                    }
+                    updateProgress();
+                }
+
+                // --- Kulturteknikker Funktioner ---
+                function addKulturItem() {
+                    const inputEl = document.getElementById('input-kultur-text');
+                    const value = inputEl.value.trim();
+                    if (!value) {
+                        inputEl.focus();
+                        return;
+                    }
+
+                    const container = document.getElementById('kultur-tags-container');
+                    const placeholder = document.getElementById('kultur-tags-placeholder');
+
+                    if (placeholder) placeholder.remove();
+
+                    // Tjek om det allerede er tilføjet (case-insensitive)
+                    const existingTags = Array.from(container.querySelectorAll('.kultur-tag-text')).map(el => el.textContent.toLowerCase());
+                    if (existingTags.includes(value.toLowerCase())) return;
+
+                    const tag = document.createElement('span');
+                    tag.className = 'inline-flex items-center gap-1 bg-emerald-100 text-emerald-800 text-sm font-medium px-2.5 py-1 rounded border border-emerald-200 shadow-sm';
+                    tag.innerHTML = `
+                <span class="kultur-tag-text">${value}</span>
+                <button type="button" onclick="removeKulturTag(this)" class="hover:text-red-600 focus:outline-none ml-1 transition-colors" title="Fjern kulturteknik">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                </button>
+            `;
+
+                    container.appendChild(tag);
+                    inputEl.value = '';
+                    updateKulturPrint();
+                    updateProgress();
+                    updateKulturSuggestions();
+                    saveDraft();
+                }
+
+                function removeKulturTag(btn) {
+                    const tag = btn.closest('span.inline-flex');
+                    if (tag) tag.remove();
+
+                    const container = document.getElementById('kultur-tags-container');
+                    if (container.querySelectorAll('.kultur-tag-text').length === 0) {
+                        container.innerHTML = '<span class="text-slate-400 text-xs italic pointer-events-none w-full text-center" id="kultur-tags-placeholder">Skriv en kulturteknik og tryk Enter...</span>';
+                    }
+                    updateKulturPrint();
+                    updateProgress();
+                    updateKulturSuggestions();
+                    saveDraft();
+                }
+
+                function addKulturSuggestion(text) {
+                    document.getElementById('input-kultur-text').value = text;
+                    addKulturItem();
+                }
+
+                function updateKulturSuggestions() {
+                    const container = document.getElementById('kultur-tags-container');
+                    const currentTags = Array.from(container.querySelectorAll('.kultur-tag-text'))
+                        .map(el => el.textContent.toLowerCase());
+
+                    const suggestionBtns = document.querySelectorAll('.kultur-suggestion-btn');
+                    suggestionBtns.forEach(btn => {
+                        const suggestionText = btn.textContent.trim().toLowerCase();
+                        if (currentTags.includes(suggestionText)) {
+                            btn.classList.add('hidden');
+                        } else {
+                            btn.classList.remove('hidden');
+                        }
+                    });
+                }
+
+                function handleKulturKeydown(event) {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        addKulturItem();
+                    }
+                }
+
+                // Funktion til at tælle unikke kulturteknikker baseret på kategorier
+                function calculateKulturCount() {
+                    const kulturContainer = document.getElementById('kultur-tags-container');
+                    if (!kulturContainer) return 0;
+                    const kulturTags = Array.from(kulturContainer.querySelectorAll('.kultur-tag-text')).map(el => el.textContent.toLowerCase());
+
+                    // Definer kategorier med keywords for at gruppere nærliggende teknikker
+                    const kulturKategorier = [
+                        ['powerpoint', 'slides', 'multimodal', 'keynote', 'prezi', 'præsentation'], // Præsentationer
+                        ['podcast', 'voxpop', 'lyd'], // Lydproduktion
+                        ['rollespil', 'paneldebat', 'varme stol', 'mundtlig', 'performativ', 'fremlæggelse', 'debat', 'interview'], // Mundtligt/Performativt
+                        ['mindmap', 'planche', 'model', 'fysisk', 'plakat'], // Fysisk produktion
+                        ['debatindlæg', 'læserbrev', 'essay', 'dagbog', 'nyhed', 'artikel', 'skriftlig', 'blog'] // Skriftligt
+                    ];
+
+                    const unikeKategorier = new Set();
+                    let ukategoriseretCount = 0;
+
+                    kulturTags.forEach(tag => {
+                        let fundetKategoriIndex = -1;
+                        for (let i = 0; i < kulturKategorier.length; i++) {
+                            if (kulturKategorier[i].some(syn => tag.includes(syn))) {
+                                fundetKategoriIndex = i;
+                                break;
+                            }
+                        }
+
+                        if (fundetKategoriIndex !== -1) {
+                            unikeKategorier.add(fundetKategoriIndex);
+                        } else {
+                            // Hvis teknikken slet ikke rammer nogle af vores kategorier,
+                            // antager vi det er sin egen unikke kategori.
+                            ukategoriseretCount++;
+                        }
+                    });
+
+                    return unikeKategorier.size + ukategoriseretCount;
+                }
+
+                function updateStamdata() {
+                    const klasse = document.getElementById('input-klasse').value.trim();
+                    const termin = document.getElementById('input-termin').value.trim();
+                    const underviser = document.getElementById('input-underviser').value.trim();
+                    const telefon = document.getElementById('input-telefon').value.trim();
+                    const mail = document.getElementById('input-mail').value.trim();
+                    const besked = document.getElementById('input-besked').value.trim();
+
+                    document.getElementById('print-klasse').textContent = klasse || "Ikke angivet";
+                    document.getElementById('print-klasse').className = klasse ? "" : "italic text-slate-400";
+
+                    document.getElementById('print-termin').textContent = termin || "Ikke angivet";
+                    document.getElementById('print-termin').className = termin ? "" : "italic text-slate-400";
+
+                    document.getElementById('print-underviser').textContent = underviser || "Ikke angivet";
+                    document.getElementById('print-underviser').className = underviser ? "" : "italic text-slate-400";
+
+                    document.getElementById('print-telefon').textContent = telefon || "Ikke angivet";
+                    document.getElementById('print-telefon').className = telefon ? "" : "italic text-slate-400";
+
+                    document.getElementById('print-mail').textContent = mail || "Ikke angivet";
+                    document.getElementById('print-mail').className = mail ? "" : "italic text-slate-400";
+
+                    const printBeskedContainer = document.getElementById('print-besked-container');
+                    const printBesked = document.getElementById('print-besked');
+
+                    if (besked) {
+                        printBesked.textContent = besked;
+                        printBeskedContainer.classList.remove('hidden');
+                    } else {
+                        printBesked.textContent = "";
+                        printBeskedContainer.classList.add('hidden');
+                    }
+
+                    saveDraft();
+                }
+
+                function updateProgress() {
+                    // Tæl emner på baggrund af rækker i tabellen
+                    const tbody = document.getElementById('table-body');
+                    const emnerCount = tbody.querySelectorAll('tr:not(#empty-state)').length;
+
+                    // Tæl udtryksformer (materialer) på tværs af alle rækker i det færdige skema
+                    let udtrykCount = 0;
+                    const uniqueKomp = new Set();
+
+                    const rows = tbody.querySelectorAll('tr:not(#empty-state)');
+                    rows.forEach(row => {
+                        const textCell = row.cells[3]; // Kolonnen "Tekster og andre udtryksformer"
+                        if (textCell) {
+                            const items = textCell.innerHTML.split(/<br\s*\/?>/i).map(s => s.trim()).filter(s => s.length > 0);
+                            udtrykCount += items.length;
+                        }
+
+                        const kompCell = row.cells[4]; // Kolonnen "Kompetenceområder"
+                        if (kompCell) {
+                            const kItems = kompCell.innerHTML.split(/<br\s*\/?>/i)
+                                .map(s => s.replace(/<[^>]+>/g, '').trim()) // fjern html hvis noget findes
+                                .filter(s => s.length > 0);
+                            kItems.forEach(k => uniqueKomp.add(k));
+                        }
+                    });
+
+                    // Tæl kulturteknikker med grupperet synonym tjek
+                    const kulturCount = calculateKulturCount();
+
+                    const kompCount = uniqueKomp.size;
+
+                    const emnerTarget = 4;
+                    const udtrykTarget = 5;
+                    const kulturTarget = 4;
+                    const kompTarget = 4;
+
+                    const emnerVal = Math.min(emnerCount, emnerTarget);
+                    const udtrykVal = Math.min(udtrykCount, udtrykTarget);
+                    const kulturVal = Math.min(kulturCount, kulturTarget);
+                    const kompVal = Math.min(kompCount, kompTarget);
+
+                    const totalVal = emnerVal + udtrykVal + kulturVal + kompVal;
+                    const totalTarget = emnerTarget + udtrykTarget + kulturTarget + kompTarget;
+
+                    let pct = Math.round((totalVal / totalTarget) * 100);
+                    if (isNaN(pct)) pct = 0;
+
+                    // Opdater UI med grøn farve
+                    const progressBar = document.getElementById('progress-bar');
+                    if (progressBar) progressBar.style.width = pct + '%';
+
+                    const progressText = document.getElementById('progress-text');
+                    if (progressText) progressText.textContent = `${totalVal}/${totalTarget} opfyldt`;
+
+                    // Farv de individuelle krav grønne (bold) når de er udfyldt, ellers standard grå
+                    const emnerEl = document.getElementById('progress-emner');
+                    if (emnerEl) {
+                        emnerEl.textContent = `Emner (${emnerCount}/${emnerTarget})`;
+                        emnerEl.className = emnerCount >= emnerTarget ? 'text-emerald-600 font-bold' : 'text-slate-500';
+                    }
+
+                    const udtrykEl = document.getElementById('progress-udtryk');
+                    if (udtrykEl) {
+                        udtrykEl.textContent = `Udtryksformer (${udtrykCount}/${udtrykTarget})`;
+                        udtrykEl.className = udtrykCount >= udtrykTarget ? 'text-emerald-600 font-bold' : 'text-slate-500';
+                    }
+
+                    const kulturEl = document.getElementById('progress-kultur');
+                    if (kulturEl) {
+                        kulturEl.textContent = `Kulturteknikker (${kulturCount}/${kulturTarget})`;
+                        kulturEl.className = kulturCount >= kulturTarget ? 'text-emerald-600 font-bold' : 'text-slate-500';
+                    }
+
+                    const kompEl = document.getElementById('progress-komp');
+                    if (kompEl) {
+                        kompEl.textContent = `Kompetenceområder (${kompCount}/${kompTarget})`;
+                        kompEl.className = kompCount >= kompTarget ? 'text-emerald-600 font-bold' : 'text-slate-500';
+                    }
+                }
+
+                // --- Print Validering ---
+                function validateAndPrint() {
+                    // Indsaml aktuelle tal på samme måde som updateProgress()
+                    const tbody = document.getElementById('table-body');
+                    const emnerCount = tbody.querySelectorAll('tr:not(#empty-state)').length;
+
+                    let udtrykCount = 0;
+                    const uniqueKomp = new Set();
+
+                    const rows = tbody.querySelectorAll('tr:not(#empty-state)');
+                    rows.forEach(row => {
+                        const textCell = row.cells[3];
+                        if (textCell) {
+                            const items = textCell.innerHTML.split(/<br\s*\/?>/i).map(s => s.trim()).filter(s => s.length > 0);
+                            udtrykCount += items.length;
+                        }
+
+                        const kompCell = row.cells[4];
+                        if (kompCell) {
+                            const kItems = kompCell.innerHTML.split(/<br\s*\/?>/i)
+                                .map(s => s.replace(/<[^>]+>/g, '').trim())
+                                .filter(s => s.length > 0);
+                            kItems.forEach(k => uniqueKomp.add(k));
+                        }
+                    });
+
+                    const kompCount = uniqueKomp.size;
+
+                    const kulturCount = calculateKulturCount();
+
+                    const missing = [];
+                    if (emnerCount < 4) missing.push(`At tilføje ${4 - emnerCount} emne(r) mere til skemaet.`);
+                    if (udtrykCount < 5) missing.push(`At have ${5 - udtrykCount} materiale(r)/udtryksform(er) mere fordelt ud på dine emner.`);
+                    if (kulturCount < 4) missing.push(`At tilføje ${4 - kulturCount} kulturteknik(ker) mere nederst.`);
+                    if (kompCount < 4) missing.push(`At have alle 4 kompetenceområder repræsenteret i skemaet (du mangler ${4 - kompCount}).`);
+
+                    if (missing.length === 0) {
+                        // Alle krav opfyldt, print med det samme!
+                        executePrint();
+                    } else {
+                        // Viser mangler i en overskuelig modal boks
+                        const listEl = document.getElementById('print-modal-missing-list');
+                        listEl.innerHTML = '';
+                        missing.forEach(item => {
+                            const li = document.createElement('li');
+                            li.textContent = item;
+                            listEl.appendChild(li);
+                        });
+                        document.getElementById('print-modal').classList.remove('hidden');
+                    }
+                }
+
+                function closePrintModal() {
+                    document.getElementById('print-modal').classList.add('hidden');
+                }
+
+                // Wrapper der omdøber fanen midlertidigt, så printet/PDF'en får det rigtige navn
+                function executePrint() {
+                    hasUnsavedChanges = false;
+                    const originalTitle = document.title;
+                    const klasse = document.getElementById('input-klasse').value.trim() || 'UdenHold';
+                    const termin = document.getElementById('input-termin').value.trim() || 'UdenTermin';
+                    const underviser = document.getElementById('input-underviser').value.trim() || 'UdenLærer';
+
+                    document.title = `Opgivelser til eksamen i KRI ${klasse} (${termin})`;
+                    window.print();
+
+                    // Revert back immediately after print dialog closes
+                    document.title = originalTitle;
+                }
+
+                function forcePrint() {
+                    closePrintModal();
+                    // Lidt delay for at vente på animation
+                    setTimeout(() => {
+                        hasUnsavedChanges = false;
+                        executePrint();
+                    }, 100);
+                }
+
+
+
+                // Sørg for at kultur-printet er opdateret fra start
+                updateKulturPrint();
+
+                // --- Tekster og Udtryksformer Funktioner ---
+                function addTekstItem() {
+                    const titelInput = document.getElementById('input-tekst-titel');
+                    const formInput = document.getElementById('input-tekst-form');
+                    const linkInput = document.getElementById('input-tekst-link');
+
+                    const titel = titelInput.value.trim();
+                    const form = formInput.value.trim();
+                    const link = linkInput.value.trim();
+
+                    if (!titel) {
+                        titelInput.focus();
+                        return; // Titel er påkrævet for at tilføje
+                    }
+
+                    // Sæt dem pænt sammen til visning, f.eks. "Min titel (Udtryksform)"
+                    const displayText = form ? `${titel} (${form})` : titel;
+
+                    const container = document.getElementById('tekster-list-container');
+                    const placeholder = document.getElementById('tekster-placeholder');
+
+                    if (placeholder) placeholder.remove();
+
+                    const safeDisplayDiv = document.createElement('div');
+                    safeDisplayDiv.textContent = displayText;
+                    const safeDisplay = safeDisplayDiv.innerHTML;
+
+                    const safeTitelDiv = document.createElement('div');
+                    safeTitelDiv.textContent = titel;
+                    const safeTitel = safeTitelDiv.innerHTML;
+
+                    const safeFormDiv = document.createElement('div');
+                    safeFormDiv.textContent = form;
+                    const safeForm = safeFormDiv.innerHTML;
+
+                    const safeLinkDiv = document.createElement('div');
+                    safeLinkDiv.textContent = link;
+                    const safeLink = safeLinkDiv.innerHTML;
+
+                    const item = document.createElement('div');
+                    item.className = 'flex justify-between items-start bg-blue-50 text-blue-900 text-sm p-2 rounded border border-blue-100 shadow-sm w-full';
+
+                    let textSpan = `<span class="tekst-item-text break-words pr-2 leading-tight" data-title="${safeTitel}" data-form="${safeForm}" data-link="${safeLink}">${safeDisplay}</span>`;
+                    if (link) {
+                        textSpan = `<span class="tekst-item-text break-words pr-2 leading-tight" data-title="${safeTitel}" data-form="${safeForm}" data-link="${safeLink}"><a href="${safeLink}" target="_blank" class="text-blue-600 hover:underline" title="${safeLink}">${safeDisplay}</a></span>`;
+                    }
+
+                    item.innerHTML = `
+                ${textSpan}
+                <button type="button" onclick="this.parentElement.remove(); checkTeksterEmpty();" class="text-red-400 hover:text-red-600 focus:outline-none shrink-0" title="Fjern materiale">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            `;
+
+                    container.appendChild(item);
+
+                    // Ryd felter og gør klar til næste
+                    titelInput.value = '';
+                    formInput.value = '';
+                    linkInput.value = '';
+                    titelInput.focus();
+                }
+
+                function checkTeksterEmpty() {
+                    const container = document.getElementById('tekster-list-container');
+                    if (container.children.length === 0) {
+                        container.innerHTML = '<span class="text-slate-400 text-xs italic pointer-events-none w-full text-center" id="tekster-placeholder">Tilføj materialer ovenfor...</span>';
+                    }
+                }
+
+                // --- Tag System Funktioner ---
+                function addTag(selectElement) {
+                    const value = selectElement.value;
+                    if (!value) return;
+
+                    const container = document.getElementById('tags-container');
+                    const placeholder = document.getElementById('tags-placeholder');
+
+                    // Fjern placeholder-teksten, første gang et tag tilføjes
+                    if (placeholder) {
+                        placeholder.remove();
+                    }
+
+                    // Tjek om tagget allerede er tilføjet (undgå dubletter)
+                    const existingTags = Array.from(container.querySelectorAll('.tag-text')).map(el => el.textContent);
+                    if (existingTags.includes(value)) {
+                        selectElement.value = ''; // Nulstil dropdown
+                        return;
+                    }
+
+                    // Opret selve tag-elementet (den blå "brik")
+                    const tag = document.createElement('span');
+                    tag.className = 'inline-flex items-center gap-1 bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-1 rounded border border-blue-200 shadow-sm';
+                    tag.innerHTML = `
+                <span class="tag-text">${value}</span>
+                <button type="button" onclick="removeTag(this)" class="hover:text-red-600 focus:outline-none ml-1 transition-colors" title="Fjern område">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                </button>
+            `;
+
+                    container.appendChild(tag);
+
+                    // Nulstil dropdown så man nemt kan vælge det næste
+                    selectElement.value = '';
+                }
+
+                function removeTag(buttonElement) {
+                    const container = document.getElementById('tags-container');
+                    const tag = buttonElement.closest('span.inline-flex');
+
+                    if (tag) {
+                        tag.remove();
+                    }
+
+                    // Vis placeholder-teksten igen, hvis der ikke er flere tags tilbage
+                    if (container.querySelectorAll('.tag-text').length === 0) {
+                        container.innerHTML = '<span class="text-slate-400 text-xs italic pointer-events-none w-full text-center" id="tags-placeholder">Vælg ovenfor for at tilføje...</span>';
+                    }
+                }
+
+                // --- Begreb System Funktioner (Med Forslag) ---
+                const begreberDB = {
+                    "Næstekærlighed": ["Det dobbelte kærlighedsbud", "Den gyldne regel", "Diakoni", "Den barmhjertige samaritaner"],
+                    "Det dobbelte kærlighedsbud": ["Næstekærlighed", "Den gyldne regel", "Gud og næsten"],
+                    "Den gyldne regel": ["Næstekærlighed", "Det dobbelte kærlighedsbud", "Etik", "Gensidighed"],
+                    "Sekularisering": ["Afsekularisering", "Ateisme", "Kulturreligion"],
+                    "Afsekularisering": ["Sekularisering", "Religionens genkomst"],
+                    "Syndefaldet": ["Arvesynd", "Ondskab", "Nåde", "Frelse", "Skabelsen"],
+                    "Arvesynd": ["Syndefaldet", "Nåde", "Martin Luther", "Menneskesyn"],
+                    "Nåde": ["Frelse", "Tilgivelse", "Arvesynd", "Korsfæstelse"],
+                    "Treenigheden": ["Faderen", "Sønnen", "Helligånden", "Monoteisme"],
+                    "Reformationen": ["Martin Luther", "Protestantisme", "Katolicisme", "Aflad"],
+                    "Martin Luther": ["Reformationen", "Nåde", "Bibeloversættelse", "Det almindelige præstedømme"],
+                    "Lignelse": ["Jesu fortællinger", "Guds rige", "Den barmhjertige samaritaner", "Den fortabte søn"],
+                    "Eksistentialisme": ["Søren Kierkegaard", "Valg", "Ansvar", "Frihed", "Skyld"],
+                    "Søren Kierkegaard": ["Eksistentialisme", "Stadier på livets vej", "Hin enkelte"],
+                    "Kulturreligion": ["Sekularisering", "Tradition", "Folkekirken"],
+                    "Etik": ["Moral", "Livsfilosofi", "Næstekærlighed", "Pligtetik", "Nytteetik"],
+                    "Monoteisme": ["Treenigheden", "Islam", "Jødedom"],
+                    "Teodicé-problemet": ["Ondskab", "Lidelse", "Guds almagt", "Guds godhed"],
+                    "Oplysningstid": ["Fornuft", "Videnskab", "Religionskritik", "Menneskerettigheder"]
+                };
+
+                // Lav en flad liste af alle kendte begreber til autocomplete
+                const allKnownBegreber = Array.from(new Set([
+                    ...Object.keys(begreberDB),
+                    ...Object.values(begreberDB).flat()
+                ])).sort();
+
+                // Vis autocomplete-listen når man skriver
+                function showBegrebAutocomplete(inputStr) {
+                    const dropdown = document.getElementById('begreb-autocomplete-list');
+                    dropdown.innerHTML = '';
+                    if (!inputStr) {
+                        dropdown.classList.add('hidden');
+                        return;
+                    }
+
+                    const lowerInput = inputStr.toLowerCase();
+                    const matches = allKnownBegreber.filter(b => b.toLowerCase().includes(lowerInput));
+
+                    if (matches.length > 0) {
+                        dropdown.classList.remove('hidden');
+                        matches.forEach(match => {
+                            const div = document.createElement('div');
+                            div.className = 'p-2 hover:bg-emerald-50 cursor-pointer text-sm text-slate-800';
+                            // Highlight match
+                            const regex = new RegExp(`(${inputStr})`, "gi");
+                            div.innerHTML = match.replace(regex, "<span class='font-bold text-emerald-600'>$1</span>");
+                            div.onclick = () => {
+                                addBegrebTag(match);
+                                document.getElementById('input-begreb-text').value = '';
+                                dropdown.classList.add('hidden');
+                            };
+                            dropdown.appendChild(div);
+                        });
+                    } else {
+                        dropdown.classList.add('hidden');
+                    }
+                }
+
+                // Skjul autocomplete dropdown hvis man klikker andre steder
+                document.addEventListener('click', function (e) {
+                    if (e.target.id !== 'input-begreb-text') {
+                        const dropdown = document.getElementById('begreb-autocomplete-list');
+                        if (dropdown) dropdown.classList.add('hidden');
+                    }
+                });
+
+                // Lyt efter Enter i input-feltet for begreber
+                function handleBegrebKeydown(event) {
+                    if (event.key === 'Enter') {
+                        event.preventDefault(); // Forhindrer at siden evt. opdaterer
+                        const val = event.target.value.trim();
+                        if (val) {
+                            addBegrebTag(val);
+                            event.target.value = '';
+                            document.getElementById('begreb-autocomplete-list').classList.add('hidden');
+                        }
+                    }
+                }
+
+                // Lyt efter Enter i input-felterne for tekster
+                function handleTekstKeydown(event) {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+
+                        const id = event.target.id;
+
+                        if (id === 'input-tekst-titel') {
+                            // Gå til udtryksform
+                            document.getElementById('input-tekst-form').focus();
+                        } else if (id === 'input-tekst-form') {
+                            // Gå til link
+                            document.getElementById('input-tekst-link').focus();
+                        } else if (id === 'input-tekst-link') {
+                            // Tryk tilføj
+                            addTekstItem();
+                        }
+                    }
+                }
+
+                // Tilføj det faktiske begreb som et "Tag"
+                function addBegrebTag(value) {
+                    if (!value) return;
+
+                    const container = document.getElementById('begreber-tags-container');
+                    const placeholder = document.getElementById('begreber-tags-placeholder');
+
+                    if (placeholder) placeholder.remove();
+
+                    // Tjek om det allerede er tilføjet (case-insensitive)
+                    const existingTags = Array.from(container.querySelectorAll('.begreb-tag-text')).map(el => el.textContent.toLowerCase());
+                    if (existingTags.includes(value.toLowerCase())) return;
+
+                    const tag = document.createElement('span');
+                    tag.className = 'inline-flex items-center gap-1 bg-emerald-100 text-emerald-800 text-sm font-medium px-2.5 py-1 rounded border border-emerald-200 shadow-sm';
+                    tag.innerHTML = `
+                <span class="begreb-tag-text">${value}</span>
+                <button type="button" onclick="removeBegrebTag(this)" class="hover:text-red-600 focus:outline-none ml-1 transition-colors" title="Fjern begreb">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                </button>
+            `;
+
+                    container.appendChild(tag);
+                    updateRelatedSuggestions(); // Beregn og vis nye kloge forslag!
+                }
+
+                // Fjern et begreb-tag
+                function removeBegrebTag(btn) {
+                    const tag = btn.closest('span.inline-flex');
+                    if (tag) tag.remove();
+
+                    const container = document.getElementById('begreber-tags-container');
+                    if (container.querySelectorAll('.begreb-tag-text').length === 0) {
+                        container.innerHTML = '<span class="text-slate-400 text-xs italic pointer-events-none w-full text-center" id="begreber-tags-placeholder">Skriv et begreb og tryk Enter...</span>';
+                    }
+                    updateRelatedSuggestions(); // Opdater forslag igen
+                }
+
+                // Find på kloge forslag baseret på hvad der er valgt lige nu
+                function updateRelatedSuggestions() {
+                    const container = document.getElementById('begreber-tags-container');
+                    const currentTags = Array.from(container.querySelectorAll('.begreb-tag-text')).map(el => el.textContent);
+                    const suggestionsBox = document.getElementById('related-begreber-suggestions');
+
+                    if (currentTags.length === 0) {
+                        suggestionsBox.innerHTML = '';
+                        return;
+                    }
+
+                    let suggestions = new Set();
+
+                    // Gennemgå alle valgte tags og find deres beslægtede begreber i begreberDB
+                    currentTags.forEach(tag => {
+                        const key = Object.keys(begreberDB).find(k => k.toLowerCase() === tag.toLowerCase());
+                        if (key) {
+                            begreberDB[key].forEach(related => suggestions.add(related));
+                        }
+                    });
+
+                    // Fjern de forslag, brugeren allerede har tilføjet
+                    currentTags.forEach(tag => {
+                        [...suggestions].forEach(s => {
+                            if (s.toLowerCase() === tag.toLowerCase()) suggestions.delete(s);
+                        });
+                    });
+
+                    // Tegn de smarte forslagsknapper, hvis der er nogen
+                    if (suggestions.size > 0) {
+                        let html = '<div class="text-xs text-slate-500 mb-1 font-medium">Smarte forslag:</div><div class="flex flex-wrap gap-1">';
+                        Array.from(suggestions).forEach(suggestion => {
+                            html += `<button type="button" onclick="addBegrebTag('${suggestion}')" class="text-xs bg-slate-50 hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 px-2 py-1 rounded-full border border-slate-300 hover:border-emerald-300 transition-colors duration-150 flex items-center gap-1 shadow-sm">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                                ${suggestion}
+                            </button>`;
+                        });
+                        html += '</div>';
+                        suggestionsBox.innerHTML = html;
+                    } else {
+                        suggestionsBox.innerHTML = '';
+                    }
+                }
+
+                // --- GEM & INDLÆS KLADDE LOGIK ---
+
+                let saveTimeout;
+                function showSaveIndicator() {
+                    const indicator = document.getElementById('save-indicator');
+                    indicator.classList.remove('hidden');
+
+                    // Force reflow for at animationen virker
+                    void indicator.offsetWidth;
+
+                    indicator.classList.remove('opacity-0');
+                    indicator.classList.add('opacity-100');
+
+                    clearTimeout(saveTimeout);
+                    saveTimeout = setTimeout(() => {
+                        indicator.classList.remove('opacity-100');
+                        indicator.classList.add('opacity-0');
+                        setTimeout(() => indicator.classList.add('hidden'), 500);
+                    }, 2000);
+                }
+
+                function serializeState() {
+                    const state = {
+                        version: 1,
+                        stamdata: {
+                            klasse: document.getElementById('input-klasse').value,
+                            termin: document.getElementById('input-termin').value,
+                            underviser: document.getElementById('input-underviser').value,
+                            telefon: document.getElementById('input-telefon').value,
+                            mail: document.getElementById('input-mail').value,
+                            besked: document.getElementById('input-besked').value
+                        },
+                        rows: [],
+                        kulturteknikker: []
+                    };
+
+                    // Gem rækker fra opsætningen via data-raw attributter vi tilføjede tidligere
+                    const tbody = document.getElementById('table-body');
+                    const rows = tbody.querySelectorAll('tr:not(#empty-state)');
+                    rows.forEach(row => {
+                        state.rows.push({
+                            emne: row.cells[0].dataset.raw || '',
+                            problem: row.cells[1].dataset.raw || '',
+                            begreber: row.cells[2].dataset.raw || '',
+                            teksterHtml: decodeURIComponent(row.cells[3].dataset.rawHtml || ''),
+                            kompetencer: row.cells[4].dataset.raw || ''
+                        });
+                    });
+
+                    // Gem kulturteknikker
+                    const kulturContainer = document.getElementById('kultur-tags-container');
+                    const kulturTags = Array.from(kulturContainer.querySelectorAll('.kultur-tag-text'));
+                    kulturTags.forEach(el => state.kulturteknikker.push(el.textContent));
+
+                    return JSON.stringify(state);
+                }
+
+                function deserializeState(jsonString) {
+                    try {
+                        const state = JSON.parse(jsonString);
+
+                        // Genskab Stamdata
+                        if (state.stamdata) {
+                            document.getElementById('input-klasse').value = state.stamdata.klasse || '';
+                            document.getElementById('input-termin').value = state.stamdata.termin || '';
+                            document.getElementById('input-underviser').value = state.stamdata.underviser || '';
+                            if (state.stamdata.kontakt !== undefined) {
+                                // Backend kompatibilitet med det gamle samlede felt
+                                document.getElementById('input-telefon').value = state.stamdata.kontakt || '';
+                            }
+                            if (state.stamdata.telefon !== undefined) {
+                                document.getElementById('input-telefon').value = state.stamdata.telefon || '';
+                            }
+                            if (state.stamdata.mail !== undefined) {
+                                document.getElementById('input-mail').value = state.stamdata.mail || '';
+                            }
+                            if (state.stamdata.besked !== undefined) {
+                                document.getElementById('input-besked').value = state.stamdata.besked || '';
+                            }
+                            updateStamdata();
+                        }
+
+                        // Genskab Rækker (Skemaet)
+                        const tbody = document.getElementById('table-body');
+                        if (state.rows && state.rows.length > 0) {
+                            const emptyState = document.getElementById('empty-state');
+                            if (emptyState) emptyState.remove();
+
+                            tbody.innerHTML = '';
+                            rowCount = 0;
+
+                            state.rows.forEach(rowData => {
+                                const tr = document.createElement('tr');
+                                tr.className = "hover:bg-slate-50 transition-colors duration-150 align-top";
+
+                                tr.innerHTML = `
+                            <td class="border border-slate-300 p-3 font-medium outline-none focus:bg-emerald-50 focus:ring-2 focus:ring-emerald-500 rounded transition duration-150" contenteditable="true" onblur="saveInlineEdit(this)" data-raw="${rowData.emne}">${formatText(rowData.emne)}</td>
+                            <td class="border border-slate-300 p-3 outline-none focus:bg-emerald-50 focus:ring-2 focus:ring-emerald-500 rounded transition duration-150" contenteditable="true" onblur="saveInlineEdit(this)" data-raw="${rowData.problem}">${formatText(rowData.problem)}</td>
+                            <td class="border border-slate-300 p-3 outline-none focus:bg-emerald-50 focus:ring-2 focus:ring-emerald-500 rounded transition duration-150" contenteditable="true" onblur="saveInlineEdit(this)" data-raw="${rowData.begreber}">${formatText(rowData.begreber)}</td>
+                            <td class="border border-slate-300 p-3 outline-none focus:bg-emerald-50 focus:ring-2 focus:ring-emerald-500 rounded transition duration-150" contenteditable="true" onblur="saveInlineEdit(this)" data-raw-html="${encodeURIComponent(rowData.teksterHtml)}">${rowData.teksterHtml}</td>
+                            <td class="border border-slate-300 p-3 outline-none focus:bg-emerald-50 focus:ring-2 focus:ring-emerald-500 rounded transition duration-150" contenteditable="true" onblur="saveInlineEdit(this)" data-raw="${rowData.kompetencer}">${formatTextDoubleSpaced(rowData.kompetencer)}</td>
+                            <td class="border border-slate-300 p-2 text-center print-hidden align-middle">
+                                <div class="flex flex-col gap-1 items-center">
+                                    <button onclick="editRow(this)" class="text-blue-500 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 p-1.5 rounded transition-colors w-full flex justify-center" title="Rediger række">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                            <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                        </svg>
+                                    </button>
+                                    <button onclick="deleteRow(this)" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-1.5 rounded transition-colors w-full flex justify-center" title="Slet række">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        `;
+                                tbody.appendChild(tr);
+                                rowCount++;
+                            });
+                        } else {
+                            tbody.innerHTML = `
+                        <tr id="empty-state">
+                            <td colspan="6" class="text-center p-8 text-slate-400 italic print-hidden">Skemaet er tomt. Tilføj emner ovenfor.</td>
+                        </tr>
+                    `;
+                            rowCount = 0;
+                        }
+
+                        // Genskab Kulturteknikker
+                        const kulturContainer = document.getElementById('kultur-tags-container');
+                        const placeholder = document.getElementById('kultur-tags-placeholder');
+                        if (placeholder) placeholder.remove();
+
+                        // Først sletter vi alle eksisterende
+                        const existing = kulturContainer.querySelectorAll('.inline-flex');
+                        existing.forEach(e => e.remove());
+
+                        if (state.kulturteknikker && state.kulturteknikker.length > 0) {
+                            state.kulturteknikker.forEach(kultur => {
+                                const span = document.createElement('span');
+                                span.className = "inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium bg-emerald-100 text-emerald-800 border border-emerald-200 shadow-sm animate-fade-in";
+                                span.innerHTML = `
+                            <span class="kultur-tag-text">${kultur}</span>
+                            <button type="button" onclick="deleteKulturTag(this)" class="text-emerald-500 hover:text-emerald-700 focus:outline-none focus:text-emerald-700 print-hidden" p="Slet tag">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                                </svg>
+                            </button>
+                        `;
+                                kulturContainer.appendChild(span);
+                            });
+                        } else {
+                            kulturContainer.innerHTML = '<span class="text-slate-400 text-xs italic pointer-events-none w-full text-center" id="kultur-tags-placeholder">Skriv en kulturteknik og tryk Enter...</span>';
+                        }
+
+                        updateKulturPrint();
+                        updateProgress();
+                        updateKulturSuggestions();
+
+                    } catch (e) {
+                        console.error("Kunne ikke indlæse kladde fra localStorage", e);
+                    }
+                }
+
+                function saveDraft() {
+                    hasUnsavedChanges = true;
+                    const stateJson = serializeState();
+                    localStorage.setItem('kristendomskundskab_kladde', stateJson);
+                    showSaveIndicator();
+                }
+
+                // Kør auto-load ved start
+                window.addEventListener('DOMContentLoaded', () => {
+                    const savedData = localStorage.getItem('kristendomskundskab_kladde');
+                    if (savedData) {
+                        deserializeState(savedData);
+                    }
+                });
+
+                // --- FIL GEM & ÅBN LOGIK ---
+
+                function saveForNow() {
+                    // Sørger for at dataen er serialiseret lokalt (selvom saveDraft gør det samme, 
+                    // så skal denne fjerne advarslen eksplicit, fremfor at saveDraft tilføjer den).
+                    const stateJson = serializeState();
+                    localStorage.setItem('kristendomskundskab_kladde', stateJson);
+                    hasUnsavedChanges = false;
+                    showSaveIndicator();
+                }
+
+                function downloadDraft() {
+                    hasUnsavedChanges = false;
+                    const dataStr = serializeState();
+                    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                    const url = URL.createObjectURL(dataBlob);
+
+                    const a = document.createElement('a');
+                    const date = new Date();
+                    const dateString = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+                    a.href = url;
+                    a.download = `kristendomskundskab_opgivelsesskema_kladde_${dateString}.json`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }
+
+                function uploadDraft(event) {
+                    const file = event.target.files[0];
+                    if (!file) return;
+
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const contents = e.target.result;
+                        deserializeState(contents);
+                        saveDraft(); // Sørg for evt localstorage også har den seneste
+                        alert("Kladden er indlæst med succes!");
+                    };
+                    reader.readAsText(file);
+
+                    // Nulstil file inputtet så man kan uploade den samme fil igen senere
+                    event.target.value = '';
+                }
+
+                updateProgress();
+                updateKulturSuggestions();
+
+                // --- TEST FUNKTION ---
+                function fillRequirements() {
+                    // Emne 1
+                    document.getElementById('input-emne').value = "Tillid og Tvivl";
+                    document.getElementById('input-problem').value = "Hvordan kommer tvivl til udtryk i det moderne menneske?";
+                    const begreber1 = ['Eksistentialisme', 'Gudsbegreb', 'Lidelsens problem'];
+                    begreber1.forEach(b => addBegrebTag(b));
+
+                    document.getElementById('input-tekst-titel').value = "Jobs Bog (Uddrag)";
+                    document.getElementById('input-tekst-form').value = "Tekst";
+                    document.getElementById('input-tekst-link').value = "https://bibelselskabet.dk";
+                    addTekstItem();
+
+                    document.getElementById('input-kompetencer').value = "Bibelske fortællinger";
+                    addTag(document.getElementById('input-kompetencer'));
+                    addRow();
+
+                    // Emne 2
+                    document.getElementById('input-emne').value = "Ondskab";
+                    document.getElementById('input-problem').value = "Findes der absolut ondskab, eller er det menneskeskabt?";
+                    const begreber2 = ['Arvesynd', 'Det dæmoniske', 'Fri vilje'];
+                    begreber2.forEach(b => addBegrebTag(b));
+
+                    document.getElementById('input-tekst-titel').value = "Blinkende Lygter";
+                    document.getElementById('input-tekst-form').value = "Film";
+                    document.getElementById('input-tekst-link').value = "https://filmstriben.dk";
+                    addTekstItem();
+
+                    document.getElementById('input-tekst-titel').value = "Ondskabens Psykologi (Artikel)";
+                    document.getElementById('input-tekst-form').value = "Artikel";
+                    document.getElementById('input-tekst-link').value = "https://faktalink.dk";
+                    addTekstItem();
+
+                    document.getElementById('input-kompetencer').value = "Livsfilosofi og etik";
+                    addTag(document.getElementById('input-kompetencer'));
+                    addRow();
+
+                    // Emne 3
+                    document.getElementById('input-emne').value = "Verdensreligionerne";
+                    document.getElementById('input-problem').value = "Hvordan adskiller jødedommen sig fra kristendommen?";
+                    const begreber3 = ['Treenighed', 'Toraen', 'Monoteisme'];
+                    begreber3.forEach(b => addBegrebTag(b));
+
+                    document.getElementById('input-tekst-titel').value = "Jerusalems fald";
+                    document.getElementById('input-tekst-form').value = "Tekst";
+                    document.getElementById('input-tekst-link').value = "https://danmarkshistorien.dk";
+                    addTekstItem();
+
+                    document.getElementById('input-kompetencer').value = "Ikke-kristne religioner og livsopfattelser";
+                    addTag(document.getElementById('input-kompetencer'));
+                    addRow();
+
+                    // Emne 4
+                    document.getElementById('input-emne').value = "Næstekærlighed";
+                    document.getElementById('input-problem').value = "Er næstekærlighed betingelsesløs?";
+                    const begreber4 = ['Den barmhjertige samaritaner', 'Etik', 'Pligt'];
+                    begreber4.forEach(b => addBegrebTag(b));
+
+                    document.getElementById('input-tekst-titel').value = "Lukas 10,25-37";
+                    document.getElementById('input-tekst-form').value = "Tekst";
+                    document.getElementById('input-tekst-link').value = "https://bibelselskabet.dk/bibelen/luk/10";
+                    addTekstItem();
+
+                    document.getElementById('input-kompetencer').value = "Kristendom";
+                    addTag(document.getElementById('input-kompetencer'));
+                    addRow();
+
+                    // Kulturteknikker
+                    ['Podcast', 'Grafisk tidslinje', 'Mindmap', 'Google Slides'].forEach(k => {
+                        document.getElementById('input-kultur-text').value = k;
+                        addKulturItem();
+                    });
+
+                    // Udfyld stamdata test
+                    document.getElementById('input-klasse').value = "9.B";
+                    document.getElementById('input-termin').value = "Sommer 2026";
+                    document.getElementById('input-underviser').value = "Hanne Nielsen";
+                    document.getElementById('input-telefon').value = "22 33 44 55";
+                    document.getElementById('input-mail').value = "hanne@skolen.dk";
+                    document.getElementById('input-besked').value = "Kære Censor. Velkommen!\nPrøven indledes med et lille udleveret tekststykke. Kaffe/Te stilles an i nabolokalet.";
+                    updateStamdata();
+
+                    saveDraft(); // Tvinger et gem
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+
+                function clearAllData() {
+                    if (!confirm("Er du sikker på, at du vil slette ALT data (også den gemte kladde)?")) return;
+
+                    // Ryd inputs i stamdata
+                    document.getElementById('input-klasse').value = '';
+                    document.getElementById('input-termin').value = '';
+                    document.getElementById('input-underviser').value = '';
+                    document.getElementById('input-telefon').value = '';
+                    document.getElementById('input-mail').value = '';
+                    document.getElementById('input-besked').value = '';
+                    updateStamdata();
+
+                    // Ryd igangværende række inputs
+                    document.getElementById('input-emne').value = '';
+                    document.getElementById('input-problem').value = '';
+                    document.getElementById('begreber-tags-container').innerHTML = '<span class="text-slate-400 text-xs italic pointer-events-none w-full text-center" id="begreber-tags-placeholder">Skriv et begreb og tryk Enter...</span>';
+                    document.getElementById('tekster-list-container').innerHTML = '<span class="text-slate-400 text-xs italic pointer-events-none w-full text-center" id="tekster-placeholder">Tilføj materialer ovenfor...</span>';
+                    document.getElementById('tags-container').innerHTML = '<span class="text-slate-400 text-xs italic pointer-events-none w-full text-center" id="tags-placeholder">Vælg ovenfor for at tilføje...</span>';
+
+                    // Nulstil relaterede forslag
+                    document.getElementById('related-begreber-suggestions').innerHTML = '';
+
+                    // Ryd igangværende materialer
+                    document.getElementById('input-tekst-titel').value = '';
+                    document.getElementById('input-tekst-form').value = '';
+                    document.getElementById('input-tekst-link').value = '';
+
+                    // Ryd rækker i tabellen
+                    const tbody = document.getElementById('table-body');
+                    tbody.innerHTML = `
+                <tr id="empty-state">
+                    <td colspan="6" class="text-center p-8 text-slate-400 italic print-hidden">Skemaet er tomt. Tilføj emner ovenfor.</td>
+                </tr>
+            `;
+                    rowCount = 0;
+
+                    // Ryd kulturteknikker
+                    document.getElementById('kultur-tags-container').innerHTML = '<span class="text-slate-400 text-xs italic pointer-events-none w-full text-center" id="kultur-tags-placeholder">Skriv en kulturteknik og tryk Enter...</span>';
+                    const kSuggests = document.getElementById('kultur-suggestions');
+                    if (kSuggests) kSuggests.innerHTML = `
+                <button type="button" onclick="addKulturSuggestion('Google Slides')" class="kultur-suggestion-btn text-xs bg-slate-50 hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 px-2 py-1 rounded-full border border-slate-300 hover:border-emerald-300 transition-colors duration-150 flex items-center gap-1 shadow-sm"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>Google Slides</button>
+                <button type="button" onclick="addKulturSuggestion('Podcast')" class="kultur-suggestion-btn text-xs bg-slate-50 hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 px-2 py-1 rounded-full border border-slate-300 hover:border-emerald-300 transition-colors duration-150 flex items-center gap-1 shadow-sm"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>Podcast</button>
+                <button type="button" onclick="addKulturSuggestion('Rollespil')" class="kultur-suggestion-btn text-xs bg-slate-50 hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 px-2 py-1 rounded-full border border-slate-300 hover:border-emerald-300 transition-colors duration-150 flex items-center gap-1 shadow-sm"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>Rollespil</button>
+                <button type="button" onclick="addKulturSuggestion('Fysisk model')" class="kultur-suggestion-btn text-xs bg-slate-50 hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 px-2 py-1 rounded-full border border-slate-300 hover:border-emerald-300 transition-colors duration-150 flex items-center gap-1 shadow-sm"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>Fysisk model</button>
+                <button type="button" onclick="addKulturSuggestion('Grafisk fremstilling')" class="kultur-suggestion-btn text-xs bg-slate-50 hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 px-2 py-1 rounded-full border border-slate-300 hover:border-emerald-300 transition-colors duration-150 flex items-center gap-1 shadow-sm"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>Grafisk fremstilling</button>
+                <button type="button" onclick="addKulturSuggestion('Film/Video')" class="kultur-suggestion-btn text-xs bg-slate-50 hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 px-2 py-1 rounded-full border border-slate-300 hover:border-emerald-300 transition-colors duration-150 flex items-center gap-1 shadow-sm"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>Film/Video</button>
+            `;
+
+                    updateProgress();
+                    updateKulturPrint();
+                    saveDraft();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            </script>
+</body>
+
+</html>
